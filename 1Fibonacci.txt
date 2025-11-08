@@ -1,0 +1,44 @@
+#include <iostream>
+using namespace std;
+
+// Recursive Fibonacci with step count
+int fibRecursive(int n, int &stepCount) {
+    stepCount++; // Counting the call
+    if (n == 0) return 0;
+    if (n == 1) return 1;
+    return fibRecursive(n - 1, stepCount) + fibRecursive(n - 2, stepCount);
+}
+
+// Iterative Fibonacci with step count
+int fibIterative(int n, int &stepCount) {
+    if (n == 0) return 0;
+    int a = 0, b = 1, c;
+    stepCount = 1; 
+
+    for (int i = 2; i <= n; i++) {
+        c = a + b;   
+        a = b;       
+        b = c;       
+        stepCount += 3; 
+    }
+    return b;
+}
+
+int main() {
+    int n;
+    cout << "Enter the value of n: ";
+    cin >> n;
+
+    int recSteps = 0, iterSteps = 0;
+
+    int fibRec = fibRecursive(n, recSteps);
+    int fibItr = fibIterative(n, iterSteps);
+
+    cout << "Fibonacci(" << n << ") using recursion = " << fibRec << endl;
+    cout << "Recursive Step Count = " << recSteps << endl;
+
+    cout << "\nFibonacci(" << n << ") using iteration = " << fibItr << endl;
+    cout << "Iterative Step Count = " << iterSteps << endl;
+
+    return 0;
+}

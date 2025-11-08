@@ -1,0 +1,63 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+// Function to solve 0/1 Knapsack using Dynamic Programming
+int knapsack(vector<int> &value, vector<int> &weight, int capacity, int n) {
+    // Create a DP table of size (n+1) x (capacity+1)
+    vector<vector<int>> dp(n + 1, vector<int>(capacity + 1, 0));
+
+    // Build table dp[][] in bottom-up manner
+    for (int i = 1; i <= n; i++) {
+        for (int w = 1; w <= capacity; w++) {
+            if (weight[i - 1] <= w) {
+                // Either include item or exclude it
+                dp[i][w] = max(
+                    value[i - 1] + dp[i - 1][w - weight[i - 1]],
+                    dp[i - 1][w]
+                );
+            } else {
+                // Item cannot be included
+                dp[i][w] = dp[i - 1][w];
+            }
+        }
+    }
+
+    // The last cell contains the answer
+    return dp[n][capacity];
+}
+
+int main() {
+    int n;
+    cout << "Enter number of items: ";
+    cin >> n;
+
+    vector<int> weight(n), value(n);
+
+    cout << "Enter weights of items:\n";
+    for (int i = 0; i < n; i++) {
+        cin >> weight[i];
+    }
+
+    cout << "Enter values of items:\n";
+    for (int i = 0; i < n; i++) {
+        cin >> value[i];
+    }
+
+    int capacity;
+    cout << "Enter maximum capacity of knapsack: ";
+    cin >> capacity;
+
+    int maxValue = knapsack(value, weight, capacity, n);
+
+    cout << "\nMaximum value that can be obtained = " << maxValue << endl;
+
+    return 0;
+}
+// Example test case:
+//Enter number of items:4
+//Enter weights of items:3 4 6 5
+//Enter values of items:2 1 3 4
+//Enter maximum capacity of knapsack: 8
+//Output: 6
